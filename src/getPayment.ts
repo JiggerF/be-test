@@ -8,8 +8,8 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     const paymentId = event.pathParameters?.id;
 
     if (!paymentId || !isUUID(paymentId)) {
-        const message = !paymentId ? 'paymentId is required' : 'paymentId is not valid';
-        return buildResponse(400, message)
+        const errorMessage = !paymentId ? 'PaymentId is required' : 'PaymentId is not valid';
+        return buildResponse(400, { message: errorMessage })
     }
 
     try {

@@ -49,8 +49,34 @@ describe('When the user requests the records for a specific payment', () => {
         expect(getPaymentMock).toHaveBeenCalledWith(paymentId);
     });
 
+    it('returns 400 when the paymentId is not valid', async () => {
+        // GIVEN an invalid payment ID
+        const paymentId = 'invalid-uuid';
+
+        // WHEN the handler is invoked with the invalid paymentId
+        const result = await handler({
+            pathParameters: {
+                id: paymentId,
+            },
+        } as unknown as APIGatewayProxyEvent);
+
+        // THEN it should return 400 with a message
+        expect(result.statusCode).toBe(400);
+        expect(JSON.parse(result.body)).toEqual({ message: 'PaymentId is not valid' });
+    });
+
+    it('returns 400 when the paymentId is missing', async () => {
+        // GIVEN a request without a paymentId
+        const result = await handler({
+            pathParameters: {},
+        } as unknown as APIGatewayProxyEvent);
+
+        // THEN it should return 400 with a message
+        expect(result.statusCode).toBe(400);
+        expect(JSON.parse(result.body)).toEqual({ message: 'PaymentId is required' });
+    });
+
     // TODO: Add test for 500 error
-    // TODO: Add test for invalid paymentId
 });
 
 afterEach(() => {
