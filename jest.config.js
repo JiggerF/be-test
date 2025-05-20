@@ -6,3 +6,5 @@ module.exports = {
         '^.+\\.tsx?$': 'ts-jest',
     },
 };
+
+process.env.NODE_ENV = 'test';

@@ -6,3 +6,11 @@ node_modules
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+
+# IDE settings
+.vscode/
+.idea*
+
+# OS specific
+src/.DS_*
+.DS_*
