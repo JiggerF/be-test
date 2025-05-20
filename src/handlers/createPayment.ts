@@ -1,9 +1,10 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { buildResponse, parseInput } from './lib/apigateway';
-import { createPayment, Payment } from './lib/payments';
+import { buildResponse, parseInput } from '../lib/apigateway';
+import { createPayment } from '../lib/payments';
 import { randomUUID } from 'crypto';
-import { isValidAmount } from './lib/validators';
+import { isValidAmount } from '../lib/validators';
 import * as currencyCodes from 'currency-codes';
+import { Payment } from '../models/payment.model';
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const payment = parseInput(event.body || '{}') as Payment;
@@ -33,7 +34,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     }
 
     try {
-        payment.Id = randomUUID();
+        payment.id = randomUUID();
         const result = await createPayment(payment)
         return result?.$metadata.httpStatusCode === 200
             ? buildResponse(201, {

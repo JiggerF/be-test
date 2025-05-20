@@ -1,5 +1,7 @@
 import { randomUUID } from 'crypto';
-import { createPayment, getPayment, listTables } from '../../src/lib/payments'; 
+import { createPayment, listTables } from '../../src/lib/payments';
+import { APIGatewayProxyEvent } from 'aws-lambda';
+import { handler } from '../../src/handlers/createPayment';
 
 describe('DynamoDB Local Integration Test', () => {
   it('should connect to DynamoDB Local and list tables', async () => {
@@ -30,5 +32,23 @@ describe('DynamoDB Local Integration Test', () => {
       console.error('Error reading / writing to table', error);
       throw error; // Fail the test if an error occurs
     }
+  });
+
+  it('should insert a payment into DynamoDB via the handler', async () => {
+    const input = {
+      body: {
+        amount: 100,
+        currency: 'USD',
+      }
+    }
+
+    const result = await handler({
+      body: JSON.stringify(input),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      httpMethod: 'POST',
+    } as unknown as APIGatewayProxyEvent);
+
   });
 });

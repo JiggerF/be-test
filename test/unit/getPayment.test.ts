@@ -1,6 +1,6 @@
 import * as payments from '../../src/lib/payments';
 import { randomUUID } from 'crypto';
-import { handler } from '../../src/getPayment';
+import { handler } from '../../src/handlers/getPayment';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 
 describe('When the user requests the records for a specific payment', () => {
@@ -109,6 +109,7 @@ describe('When the user requests the records for a specific payment', () => {
             message: 'Internal server error',
             code: 'INTERNAL_SERVER_ERROR'
         });
+        expect(getPaymentMock).toHaveBeenCalledWith(paymentId);
     });
 
 });

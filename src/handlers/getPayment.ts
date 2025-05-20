@@ -1,6 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { getPayment } from './lib/payments';
-import { buildResponse } from './lib/apigateway';
+import { getPayment } from '../lib/payments';
+import { buildResponse } from '../lib/apigateway';
 import { validate as isUUID } from 'uuid';
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
