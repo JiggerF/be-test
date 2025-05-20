@@ -1,6 +1,7 @@
 import { DocumentClient } from './dynamodb';
 import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { MetadataBearer } from '@aws-sdk/types';
+import { ListTablesCommand } from '@aws-sdk/client-dynamodb';
 
 export const getPayment = async (paymentId: string): Promise<Payment | null> => {
     const result = await DocumentClient.send(
@@ -33,6 +34,11 @@ export const createPayment = async (payment: Payment): Promise<MetadataBearer> =
 
     return result;
 };
+
+export const listTables = async (): Promise<string[]> => {
+    const result = await DocumentClient.send(new ListTablesCommand({}));
+    return result.TableNames || [];
+  };
 
 export type Payment = {
     id: string;

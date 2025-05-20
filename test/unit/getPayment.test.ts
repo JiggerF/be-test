@@ -1,6 +1,6 @@
-import * as payments from '../src/lib/payments';
+import * as payments from '../../src/lib/payments';
 import { randomUUID } from 'crypto';
-import { handler } from '../src/getPayment';
+import { handler } from '../../src/getPayment';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 
 describe('When the user requests the records for a specific payment', () => {

@@ -9,8 +9,8 @@ const isTest = (process.env.NODE_ENV || '').toLowerCase() === 'test';
 
 const testConfig = {
     credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY || 'fake_key',
-        secretAccessKey: process.env.AWS_SECRET_KEY || 'secret_key',
+        accessKeyId: process.env.AWS_ACCESS_KEY || 'dummy',
+        secretAccessKey: process.env.AWS_SECRET_KEY || 'dummy',
     },
     endpoint: 'http://localhost:8000',
     region: process.env.AWS_REGION || 'local',
