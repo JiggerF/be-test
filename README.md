@@ -17,7 +17,7 @@ The application is built to reflect a real-world stack and can be run locally
 2. Handlers completed: getPayment, createPayment
 3. Unit test coverage: Postive and Negative Flows
 4. Dokerised Integration test coverage: incomplete
-- Integration tests to call the handler which writes data into Dockerised dynamoDB. Maybe some helper functions to interact with DB to verify records
+- Integration tests where a client calls payment handler. The handler then interacts with dockerised dynamo DB for record insert and read. 
 
 
 ---
