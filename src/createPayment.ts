@@ -20,7 +20,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     if (!currencyCodes.code(payment.currency)) {
         return buildResponse(400, {
             message: 'Invalid currency code.',
-            code: 'INVALID_CURRENCY'
+            code: 'INVALID_REQUEST'
         });
     }
 
@@ -28,7 +28,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     if (!isValidAmount(payment.amount)) {
         return buildResponse(400, {
             message: 'Invalid amount format. Amount must be a number with up to two decimal places.',
-            code: 'INVALID_AMOUNT'
+            code: 'INVALID_REQUEST'
         });
     }
 
@@ -39,6 +39,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
             ? buildResponse(201, {
                 message: 'Payment created successfully',
                 paymentId: payment.id,
+                requestId: result.$metadata.requestId ?? 'unknown-request-id'
             })
             : buildResponse(500, {
                 message: 'Failed to create payment',
