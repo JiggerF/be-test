@@ -1,4 +1,5 @@
-import { listTables } from '../../src/lib/payments'; 
+import { randomUUID } from 'crypto';
+import { createPayment, getPayment, listTables } from '../../src/lib/payments'; 
 
 describe('DynamoDB Local Integration Test', () => {
   it('should connect to DynamoDB Local and list tables', async () => {
@@ -9,6 +10,24 @@ describe('DynamoDB Local Integration Test', () => {
       expect(Array.isArray(tables)).toBe(true); // Ensure the response is an array
     } catch (error) {
       console.error('Error listing tables:', error);
+      throw error; // Fail the test if an error occurs
+    }
+  });
+
+  it('should write to DynamoDB payments table', async () => {
+    try {
+      const payment = {
+        id: randomUUID(),
+        amount: 100,
+        currency: 'USD',
+      };
+      const resultPayment = await createPayment(payment);
+      console.log('Payment created:', resultPayment); // Log the result of the payment creation
+
+      // const resultReadPayment = await getPayment(payment.id);
+      // console.log('Payment read:', resultReadPayment); // Log the result of the payment read
+    } catch (error) {
+      console.error('Error reading / writing to table', error);
       throw error; // Fail the test if an error occurs
     }
   });

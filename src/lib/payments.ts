@@ -25,6 +25,9 @@ export const listPayments = async (): Promise<Payment[]> => {
 };
 
 export const createPayment = async (payment: Payment): Promise<MetadataBearer> => {
+    if (!payment.id) {
+        throw new Error("The 'Id' field is required for the Payments table.");
+      }
     const result = await DocumentClient.send(
         new PutCommand({
             TableName: 'Payments',

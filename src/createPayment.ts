@@ -33,7 +33,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     }
 
     try {
-        payment.id = randomUUID();
+        payment.Id = randomUUID();
         const result = await createPayment(payment)
         return result?.$metadata.httpStatusCode === 200
             ? buildResponse(201, {
