@@ -2,7 +2,6 @@ import * as payments from '../../src/lib/payments';
 import { randomUUID } from 'crypto';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { handler } from '../../src/handlers/createPayment';
-import exp = require('constants');
 
 describe('When the user requests a payment to be created', () => {
     afterEach(() => {

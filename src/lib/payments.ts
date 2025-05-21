@@ -3,7 +3,6 @@ import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { MetadataBearer } from '@aws-sdk/types';
 import { ListTablesCommand } from '@aws-sdk/client-dynamodb';
 import { Payment } from '../models/payment.model';
-import { randomUUID } from 'crypto';
 
 export const getPayment = async (paymentId: string): Promise<Payment | null> => {
     const result = await DocumentClient.send(

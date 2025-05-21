@@ -47,6 +47,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
                 code: 'PAYMENT_CREATION_FAILED'
             });
     } catch (error) {
+        console.error('Error occurred while creating the payment:', error); 
         return buildResponse(500, {
             message: 'An error occurred while creating the payment',
             code: 'INTERNAL_SERVER_ERROR'
