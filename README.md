@@ -16,9 +16,7 @@ The application is built to reflect a real-world stack and can be run locally
 1. Only 2/5 questions were completed
 2. Handlers completed: getPayment, createPayment
 3. Unit test coverage: Postive and Negative Flows
-4. Dokerised Integration test coverage: incomplete
-- Integration tests where a client calls payment handler. The handler then interacts with dockerised dynamo DB for record insert and read. 
-
+4. Integration test coverage: Postive flow testing handler->dynamoDB integration with the use of localstack docker containers
 
 ---
 
@@ -34,11 +32,21 @@ The application can be run locally using Node.js. It uses DynamoDB Local for dat
 1. Install dependencies:
    ```bash
    npm install
+   ```
 
 2. Run Unit test
    ```bash
    npm run test:unit
+   ```
 
-3. Run Integration test
+3. Run Integration test <br>
+Start LocalStack docker containers to mock DynamoDB and API Gateway services.
    ```bash
-   npm run test:integration
+   $ docker compose up -d
+   ```
+
+   Once localstack containers are up running, run integration test 
+
+   ```bash
+   $ npm run test:integration
+   ```

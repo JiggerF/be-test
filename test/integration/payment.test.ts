@@ -1,54 +1,39 @@
 import { randomUUID } from 'crypto';
 import { createPayment, listTables } from '../../src/lib/payments';
 import { APIGatewayProxyEvent } from 'aws-lambda';
-import { handler } from '../../src/handlers/createPayment';
+import { handler as createPaymentHandler } from '../../src/handlers/createPayment';
+import { handler as getPaymentHandler } from '../../src/handlers/getPayment';
 
 describe('DynamoDB Local Integration Test', () => {
-  it('should connect to DynamoDB Local and list tables', async () => {
-    try {
-      const tables = await listTables();
-      console.log('Tables:', tables); // Log the table names
-      expect(tables).toBeDefined(); // Ensure the response is defined
-      expect(Array.isArray(tables)).toBe(true); // Ensure the response is an array
-    } catch (error) {
-      console.error('Error listing tables:', error);
-      throw error; // Fail the test if an error occurs
-    }
-  });
-
-  it('should write to DynamoDB payments table', async () => {
-    try {
-      const payment = {
-        id: randomUUID(),
-        amount: 100,
-        currency: 'USD',
-      };
-      const resultPayment = await createPayment(payment);
-      console.log('Payment created:', resultPayment); // Log the result of the payment creation
-
-      // const resultReadPayment = await getPayment(payment.id);
-      // console.log('Payment read:', resultReadPayment); // Log the result of the payment read
-    } catch (error) {
-      console.error('Error reading / writing to table', error);
-      throw error; // Fail the test if an error occurs
-    }
-  });
-
-  it('should insert a payment into DynamoDB via the handler', async () => {
+  it('should create payments successfully via the handler', async () => {
+    // Given a valid payment input
     const input = {
-      body: {
-        amount: 100,
-        currency: 'USD',
-      }
+      amount: 100,
+      currency: 'USD'
     }
 
-    const result = await handler({
-      body: JSON.stringify(input),
-      headers: {
-        'Content-Type': 'application/json',
+    // When the handler is invoked with valid payment input
+    const resCreatePaymentHandler = await createPaymentHandler({
+      body: JSON.stringify(input)
+    } as unknown as APIGatewayProxyEvent);
+    console.log('Handler response:', resCreatePaymentHandler);
+    expect(resCreatePaymentHandler.statusCode).toBe(201);
+
+    // And the payment is retrieved on the same payment id
+    const paymentId = JSON.parse(resCreatePaymentHandler.body).paymentId;
+
+    const resGetPaymentHandler = await getPaymentHandler({
+      pathParameters: {
+        id: paymentId,
       },
-      httpMethod: 'POST',
     } as unknown as APIGatewayProxyEvent);
 
+    expect(resGetPaymentHandler.statusCode).toBe(200);
+    const resultGetPayment = JSON.parse(resGetPaymentHandler.body);
+
+    // Then expect the created payment matches the retrieved payment
+    expect(resultGetPayment.id).toBe(paymentId);
+    expect(resultGetPayment.currency).toBe(input.currency);
+    expect(resultGetPayment.amount).toBe(input.amount);
   });
 });
