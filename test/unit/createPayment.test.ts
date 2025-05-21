@@ -1,14 +1,14 @@
 import * as payments from '../../src/lib/payments';
 import { randomUUID } from 'crypto';
 import { APIGatewayProxyEvent } from 'aws-lambda';
-import { handler } from '../../src/createPayment';
+import { handler } from '../../src/handlers/createPayment';
 
 describe('When the user requests a payment to be created', () => {
     afterEach(() => {
         jest.resetAllMocks();
     });
 
-    const errorScenarios = [
+    const errorScenariosInvalidRequest = [
         {
             description: 'returns 400 for missing payment amount',
             input: { currency: 'AUD' },
@@ -38,13 +38,7 @@ describe('When the user requests a payment to be created', () => {
             input: { currency: 'aud', amount: 'invalid' },
             expectedStatusCode: 400,
             expectedErrorCode: 'INVALID_REQUEST'
-        },
-        {
-            description: 'returns 500 for server error',
-            input: { currency: 'AUD', amount: 200.00 },
-            expectedStatusCode: 500,
-            expectedErrorCode: 'INTERNAL_SERVER_ERROR'
-        },
+        }
     ]
 
     const constSuccessScenarios = [
@@ -62,14 +56,22 @@ describe('When the user requests a payment to be created', () => {
         },
     ]
 
-    test.each(errorScenarios)('$description', async ({ input, expectedStatusCode, expectedErrorCode }) => {
+    test.each(errorScenariosInvalidRequest)('$description', async ({ input, expectedStatusCode, expectedErrorCode }) => {
         // WHEN the handler is invoked with the test case input
         const result = await handler({
             body: JSON.stringify(input),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            httpMethod: 'POST',
+        } as unknown as APIGatewayProxyEvent);
+
+        // THEN the resulting status code should match the expected status code
+        const resultBody = JSON.parse(result.body);
+        expect(resultBody.code).toBe(expectedErrorCode);
+        expect(result.statusCode).toBe(expectedStatusCode);
+    });
+
+    test.each(errorScenariosInvalidRequest)('$description', async ({ input, expectedStatusCode, expectedErrorCode }) => {
+        // WHEN the handler is invoked with the test case input
+        const result = await handler({
+            body: JSON.stringify(input),
         } as unknown as APIGatewayProxyEvent);
 
         // THEN the resulting status code should match the expected status code
@@ -92,15 +94,33 @@ describe('When the user requests a payment to be created', () => {
         // WHEN the handler is invoked with the test case input
         const result = await handler({
             body: JSON.stringify(input),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            httpMethod: 'POST',
         } as unknown as APIGatewayProxyEvent);
 
         // THEN resulting status code should be 201 with the correct requestId
         const resultBody = JSON.parse(result.body);
         expect(result.statusCode).toBe(201);
         expect(resultBody.requestId).toBe(requestId);
+        expect(createPaymentMock).toHaveBeenCalledWith(expect.objectContaining(input));
+        expect(createPaymentMock).toHaveBeenCalledWith(expect.objectContaining({ id: expect.any(String) }));
+    });
+
+    it('returns 500 when there is an internal server error', async () => {
+        // Given a valid payment request and a mock response
+        const input = {
+            amount: 100,
+            currency: 'USD',
+        };
+        const createPaymentMock = jest.spyOn(payments, 'createPayment').mockImplementation(() => { throw new Error('Database connection failed') });
+
+        // WHEN the handler is invoked with the test case input
+        const result = await handler({
+            body: JSON.stringify(input),
+        } as unknown as APIGatewayProxyEvent);
+
+        // THEN the resulting status code should match the expected status code
+        const resultBody = JSON.parse(result.body);
+        expect(result.statusCode).toBe(500);
+        expect(resultBody.code).toBe('INTERNAL_SERVER_ERROR');
+        expect(createPaymentMock).toHaveBeenCalledWith(expect.objectContaining(input));
     });
 });

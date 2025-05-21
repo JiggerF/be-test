@@ -2,12 +2,13 @@ import { DocumentClient } from './dynamodb';
 import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { MetadataBearer } from '@aws-sdk/types';
 import { ListTablesCommand } from '@aws-sdk/client-dynamodb';
+import { Payment } from '../models/payment.model';
 
 export const getPayment = async (paymentId: string): Promise<Payment | null> => {
     const result = await DocumentClient.send(
         new GetCommand({
             TableName: 'Payments',
-            Key: { paymentId },
+            Key: { id: paymentId },
         })
     );
 
@@ -25,6 +26,9 @@ export const listPayments = async (): Promise<Payment[]> => {
 };
 
 export const createPayment = async (payment: Payment): Promise<MetadataBearer> => {
+    if (!payment.id) {
+        throw new Error("The 'Id' field is required for the Payments table.");
+      }
     const result = await DocumentClient.send(
         new PutCommand({
             TableName: 'Payments',
@@ -39,9 +43,3 @@ export const listTables = async (): Promise<string[]> => {
     const result = await DocumentClient.send(new ListTablesCommand({}));
     return result.TableNames || [];
   };
-
-export type Payment = {
-    id: string;
-    amount: number;
-    currency: string;
-};

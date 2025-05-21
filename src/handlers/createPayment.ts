@@ -1,9 +1,10 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { buildResponse, parseInput } from './lib/apigateway';
-import { createPayment, Payment } from './lib/payments';
+import { buildResponse, parseInput } from '../lib/apigateway';
+import { createPayment } from '../lib/payments';
 import { randomUUID } from 'crypto';
-import { isValidAmount } from './lib/validators';
+import { isValidAmount } from '../lib/validators';
 import * as currencyCodes from 'currency-codes';
+import { Payment } from '../models/payment.model';
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const payment = parseInput(event.body || '{}') as Payment;
@@ -46,6 +47,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
                 code: 'PAYMENT_CREATION_FAILED'
             });
     } catch (error) {
+        console.error('Error occurred while creating the payment:', error); 
         return buildResponse(500, {
             message: 'An error occurred while creating the payment',
             code: 'INTERNAL_SERVER_ERROR'
