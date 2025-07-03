@@ -2,10 +2,11 @@ import * as payments from '../../src/lib/payments';
 import { randomUUID } from 'crypto';
 import { handler } from '../../src/handlers/getPayment';
 import { APIGatewayProxyEvent } from 'aws-lambda';
+import { vi } from 'vitest';
 
 describe('When the user requests the records for a specific payment', () => {
     afterEach(() => {
-        jest.resetAllMocks();
+        vi.resetAllMocks();
     });
 
     it('returns the payment matching their input parameter.', async () => {
@@ -18,7 +19,7 @@ describe('When the user requests the records for a specific payment', () => {
         };
 
         // AND the getPayment service is mocked to return that record
-        const getPaymentMock = jest.spyOn(payments, 'getPayment').mockResolvedValueOnce(mockPayment);
+        const getPaymentMock = vi.spyOn(payments, 'getPayment').mockResolvedValueOnce(mockPayment);
 
         // WHEN the handler is invoked with the paymentId
         const result = await handler({
@@ -38,7 +39,7 @@ describe('When the user requests the records for a specific payment', () => {
         const paymentId = randomUUID();
 
         // AND the getPayment service is mocked to return null
-        const getPaymentMock = jest.spyOn(payments, 'getPayment').mockResolvedValueOnce(null);
+        const getPaymentMock = vi.spyOn(payments, 'getPayment').mockResolvedValueOnce(null);
 
         // WHEN the handler is invoked with the paymentId
         const result = await handler({
@@ -94,7 +95,7 @@ describe('When the user requests the records for a specific payment', () => {
         const paymentId = randomUUID();
 
         // AND the getPayment service is mocked to throw an error
-        const getPaymentMock = jest.spyOn(payments, 'getPayment').mockRejectedValueOnce(new Error('Internal server error'));
+        const getPaymentMock = vi.spyOn(payments, 'getPayment').mockRejectedValueOnce(new Error('Internal server error'));
 
         // WHEN the handler is involed with the paymentId
         const result = await handler({
