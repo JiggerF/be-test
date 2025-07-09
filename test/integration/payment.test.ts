@@ -1,8 +1,8 @@
 import { randomUUID } from 'crypto';
-import { createPayment, listTables } from '../../src/lib/payments';
+import { createPayment, listTables } from '@lib/payments';
 import { APIGatewayProxyEvent } from 'aws-lambda';
-import { handler as createPaymentHandler } from '../../src/handlers/createPayment';
-import { handler as getPaymentHandler } from '../../src/handlers/getPayment';
+import { handler as createPaymentHandler } from '@handlers/createPayment';
+import { handler as getPaymentHandler } from '@handlers/getPayment';
 
 describe('DynamoDB Local Integration Test', () => {
   it('should create payments successfully via the handler', async () => {

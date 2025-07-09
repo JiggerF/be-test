@@ -17,3 +17,6 @@ src/.DS_*
 
 # Localstack data directory
 localstack-data/
+
+# test reports  
+coverage

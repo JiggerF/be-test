@@ -1,11 +1,12 @@
-import * as payments from '../../src/lib/payments';
+import * as payments from '@lib/payments';
 import { randomUUID } from 'crypto';
 import { APIGatewayProxyEvent } from 'aws-lambda';
-import { handler } from '../../src/handlers/createPayment';
+import { handler } from '@handlers/createPayment';
+import { vi } from 'vitest';
 
 describe('When the user requests a payment to be created', () => {
     afterEach(() => {
-        jest.resetAllMocks();
+        vi.resetAllMocks();
     });
 
     const errorScenariosInvalidRequest = [
@@ -89,7 +90,7 @@ describe('When the user requests a payment to be created', () => {
                 "requestId": requestId
             }
         };
-        const createPaymentMock = jest.spyOn(payments, 'createPayment').mockResolvedValueOnce(successResponse);
+        const createPaymentMock = vi.spyOn(payments, 'createPayment').mockResolvedValueOnce(successResponse);
 
         // WHEN the handler is invoked with the test case input
         const result = await handler({
@@ -110,7 +111,7 @@ describe('When the user requests a payment to be created', () => {
             amount: 100,
             currency: 'USD',
         };
-        const createPaymentMock = jest.spyOn(payments, 'createPayment').mockImplementation(() => { throw new Error('Database connection failed') });
+        const createPaymentMock = vi.spyOn(payments, 'createPayment').mockImplementation(() => { throw new Error('Database connection failed') });
 
         // WHEN the handler is invoked with the test case input
         const result = await handler({
