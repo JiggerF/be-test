@@ -1,6 +1,6 @@
-import * as payments from '../../src/lib/payments';
+import * as payments from '@lib/payments';
 import { randomUUID } from 'crypto';
-import { handler } from '../../src/handlers/getPayment';
+import { handler } from '@handlers/getPayment';
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { vi } from 'vitest';
 

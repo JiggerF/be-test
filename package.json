@@ -8,8 +8,8 @@
     "scripts": {
         "build": "tsc",
         "watch": "tsc -w",
-        "test:unit": "jest --testPathPattern=test/unit",
-        "test:integration": "jest --testPathPattern=test/integration",
+        "test:unit": "npx vitest test/unit",
+        "test:integration": "npx vitest test/integration",
         "test:unit-coverage": "npx vitest run --coverage",
         "cdk": "cdk",
         "deploy": "cdk deploy --require-approval=never",
@@ -31,7 +31,10 @@
         "ts-jest": "29.2.0",
         "ts-node": "10.9.2",
         "typescript": "5.5.3",
-        "vitest": "^3.2.4"
+        "vite-tsconfig-paths": "5.1.4",
+        "vitest": "^3.2.4",
+        "vite": "5.4.19"
+
     },
     "dependencies": {
         "@aws-sdk/client-dynamodb": "3.613.0",

@@ -1,7 +1,7 @@
-import * as payments from '../../src/lib/payments';
+import * as payments from '@lib/payments';
 import { randomUUID } from 'crypto';
 import { APIGatewayProxyEvent } from 'aws-lambda';
-import { handler } from '../../src/handlers/createPayment';
+import { handler } from '@handlers/createPayment';
 import { vi } from 'vitest';
 
 describe('When the user requests a payment to be created', () => {
