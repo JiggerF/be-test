@@ -8,7 +8,7 @@ export const defaultConfig = {
     globals: true, // Enables global test functions like `describe`, `it`, etc.
     coverage: {
       reporter: [
-        'text', // shows in terminal
+        'text-summary', // shows in terminal
         'json-summary', // structured format for pipelines,
         'json', // structured format for pipelines
         'html'], 
