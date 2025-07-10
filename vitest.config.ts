@@ -7,8 +7,13 @@ export const defaultConfig = {
   test: {
     globals: true, // Enables global test functions like `describe`, `it`, etc.
     coverage: {
+      lines: 80,
+      functions: 80,
+      branches: 80,
+      statements: 80,
       reporter: [
-        'text', // shows in terminal
+        'text-summary', // shows in terminal
+        'json-summary', // structured format for pipelines,
         'json', // structured format for pipelines
         'html'], 
       reportOnFailure: true,  // If you want a coverage even if tests are failing,
