@@ -9,6 +9,7 @@ export const defaultConfig = {
     coverage: {
       reporter: [
         'text', // shows in terminal
+        'json-summary', // structured format for pipelines,
         'json', // structured format for pipelines
         'html'], 
       reportOnFailure: true,  // If you want a coverage even if tests are failing,

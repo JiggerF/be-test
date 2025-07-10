@@ -30,4 +30,16 @@ jobs:
 
       # Step 4: Run Unit Tests
       - name: Run Vitest
-        run: npm run test:unit
+        run: npm run test:unit-coverage
+    
+      # Step 5: Generate Coverage Report  
+      - name: 'Report Coverage'
+        if: always() 
+        uses:  davelosert/vitest-coverage-report-action@v2
+
+        # Step 6: Upload Coverage Report
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage/  
