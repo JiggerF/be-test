@@ -42,6 +42,12 @@ jobs:
       - name: 'Report Coverage'
         if: always() 
         uses:  davelosert/vitest-coverage-report-action@v2
+        with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            json-summary-path: coverage/coverage-summary.json
+            json-final-path: coverage/coverage-final.json
+            file-coverage-mode: all        # Try "all" instead of "changes"
+            comment-on: pr  
 
         # Step 6: Upload Coverage Report
       - name: Upload Coverage Report
