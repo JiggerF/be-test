@@ -12,6 +12,12 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    permissions:
+        # Required to checkout the code
+        contents: read
+        # Required to put a comment into the pull-request
+        pull-requests: write
+
     steps:
       # Step 1: Check out the code
       - name: Checkout code
@@ -30,7 +36,7 @@ jobs:
 
       # Step 4: Run Unit Tests
       - name: Run Vitest
-        run: npm run test:unit-coverage
+        run: npx vitest test/unit --coverage
     
       # Step 5: Generate Coverage Report  
       - name: 'Report Coverage'
