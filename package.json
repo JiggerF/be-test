@@ -1,7 +1,6 @@
 {
     "name": "be-test",
     "version": "0.1.0",
-    "type": "module",
     "bin": {
         "be-test": "bin/be-test.js"
     },
@@ -11,13 +10,14 @@
         "test:unit": "npx vitest test/unit",
         "test:integration": "npx vitest test/integration",
         "test:unit-coverage": "npx vitest test/unit --coverage",
+        "test:coverage-check": "ts-node .scripts/coverageCheck.ts",
         "cdk": "cdk",
         "deploy": "cdk deploy --require-approval=never",
         "lint": "eslint . --ext .ts,.js"
     },
     "devDependencies": {
         "@types/jest": "29.5.12",
-        "@types/node": "20.14.10",
+        "@types/node": "^20.19.7",
         "@types/prettier": "2.7.3",
         "@types/uuid": "^10.0.0",
         "@typescript-eslint/eslint-plugin": "^8.32.1",
@@ -29,12 +29,11 @@
         "eslint": "^9.27.0",
         "jest": "29.7.0",
         "ts-jest": "29.2.0",
-        "ts-node": "10.9.2",
-        "typescript": "5.5.3",
-        "vite-tsconfig-paths": "5.1.4",
-        "vitest": "^3.2.4",
-        "vite": "5.4.19"
-
+        "ts-node": "^10.9.2",
+        "typescript": "^5.5.3",
+        "vite": "5.4.19",
+        "vite-tsconfig-paths": "3.6.0",
+        "vitest": "^3.2.4"
     },
     "dependencies": {
         "@aws-sdk/client-dynamodb": "3.613.0",
