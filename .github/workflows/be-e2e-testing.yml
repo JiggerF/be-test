@@ -1,0 +1,35 @@
+name: be-e2e-testing
+
+on:
+  pull_request:
+  workflow_dispatch: {}
+
+jobs:
+  run-test:
+    uses: ./.github/workflows/test.yml
+    with:
+      generate-report: yes
+
+  report-coverage:
+    needs: run-test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+            name: vitest-coverage
+            path: ./coverage
+
+      - name: Comment on PR
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          json-summary-path: coverage/coverage-summary.json
+          json-final-path: coverage/coverage-final.json
+          file-coverage-mode: changes # Try "all" instead of "changes"
+          comment-on: pr
+          # comment-title: 'Coverage Report'
+          # comment-body: 'Coverage report generated successfully.'
