@@ -67,7 +67,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: coverage-report
-          path: ${{ inputs.coverage-path }}
+          path: .
 
       - name: List coverage directory contents
         run: ls -R ${{ inputs.coverage-path }}
@@ -83,6 +83,6 @@ jobs:
           json-final-path: ${{ inputs.coverage-path }}/coverage-final.json
           file-coverage-mode: changes # Try "all" instead of "changes"
           comment-on: pr
-          vite-config-path: ${{ inputs.coverage-path }}/vitest.config.ts
+          vite-config-path: ./vitest.config.ts
           # comment-title: 'Coverage Report'
           # comment-body: 'Coverage report generated successfully.'
