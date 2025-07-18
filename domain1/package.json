@@ -9,7 +9,7 @@
         "watch": "tsc -w",
         "test:unit": "npx vitest test/unit",
         "test:integration": "npx vitest test/integration",
-        "test:unit-coverage": "npx vitest test/unit --config ./vitest.config.ts --coverage",
+        "test:unit-coverage": "npx vitest test/unit --config ./vitest.config.ts",
         "test:coverage-check": "ts-node .scripts/coverageCheck.ts",
         "cdk": "cdk",
         "deploy": "cdk deploy --require-approval=never",

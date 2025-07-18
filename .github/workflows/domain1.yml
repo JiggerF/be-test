@@ -17,5 +17,5 @@ jobs:
     uses: ./.github/workflows/shared-test-file.yml
     with:
       service: domain1
-      # generate-report: yes
+      generate-report: yes
       actions: test
