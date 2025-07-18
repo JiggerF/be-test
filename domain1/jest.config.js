@@ -3,7 +3,7 @@
 // vitest.config.js has globals=true which overrides the need for jest.config.js
 module.exports = {
     testEnvironment: 'node',
-    roots: ['<rootDir>/test'],
+    roots: ['<rootDir>/domain1/test'],
     testMatch: ['**/*.test.ts'],
     transform: {
         '^.+\\.tsx?$': 'ts-jest',

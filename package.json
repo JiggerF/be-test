@@ -1,46 +1,6 @@
 {
-    "name": "be-test",
-    "version": "0.1.0",
-    "bin": {
-        "be-test": "bin/be-test.js"
-    },
-    "scripts": {
-        "build": "tsc",
-        "watch": "tsc -w",
-        "test:unit": "npx vitest test/unit",
-        "test:integration": "npx vitest test/integration",
-        "test:unit-coverage": "npx vitest test/unit --coverage",
-        "test:coverage-check": "ts-node .scripts/coverageCheck.ts",
-        "cdk": "cdk",
-        "deploy": "cdk deploy --require-approval=never",
-        "lint": "eslint . --ext .ts,.js"
-    },
-    "devDependencies": {
-        "@types/jest": "29.5.12",
-        "@types/node": "^20.19.7",
-        "@types/prettier": "2.7.3",
-        "@types/uuid": "^10.0.0",
-        "@typescript-eslint/eslint-plugin": "^8.32.1",
-        "@typescript-eslint/parser": "^8.32.1",
-        "@vitest/coverage-v8": "^3.2.4",
-        "aws-cdk": "^2.1016.0",
-        "currency-codes": "^2.2.0",
-        "esbuild": "^0.25.4",
-        "eslint": "^9.27.0",
-        "jest": "29.7.0",
-        "ts-jest": "29.2.0",
-        "ts-node": "^10.9.2",
-        "typescript": "^5.5.3",
-        "vite": "5.4.19",
-        "vite-tsconfig-paths": "3.6.0",
-        "vitest": "^3.2.4"
-    },
-    "dependencies": {
-        "@aws-sdk/client-dynamodb": "3.613.0",
-        "@aws-sdk/lib-dynamodb": "3.613.0",
-        "@types/aws-lambda": "8.10.141",
-        "aws-cdk-lib": "^2.196.0",
-        "constructs": "10.3.0",
-        "source-map-support": "0.5.21"
-    }
+  "workspaces": [
+    "domain1",
+    "domain2"
+  ]
 }

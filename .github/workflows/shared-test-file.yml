@@ -1,0 +1,76 @@
+name: Build and Test
+
+on:
+  workflow_call:
+    inputs:
+      generate-report:
+        description: "Generate coverage report"
+        required: false
+        type: string
+      service:
+        description: "Service name to build"
+        required: true
+        type: string
+      actions:
+        description: "Actions to perform"
+        required: false
+        type: string
+
+jobs:
+  build-and-test:
+    name: ${{ inputs.service }} - Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 # Use the Node.js version your project requires
+          cache: "npm"
+
+      # Step 4: Setup modules and Run Tests
+      - name: Run Tests
+        if: ${{ inputs.actions == 'test' }}
+        run: bash ${{ inputs.service }}/.ci/${{ inputs.actions }}.sh
+
+      # Step 6: Check Coverage Changes
+      #   - name: Track coverage changes (no enforcement)
+      #     run: npm run test:coverage-check
+
+      # Step 7: Upload Coverage Artifact
+      - name: Upload Coverage Report
+        if: ${{ inputs.generate-report }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: coverage-report
+          path: |
+            ${{ inputs.service }}/coverage/
+            ${{ inputs.service }}/vitest.config.ts
+
+  coverage-report:
+    needs: build-and-test
+    if: ${{ inputs.generate-report }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: .
+
+      - name: Comment on PR
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          json-summary-path: ./coverage/coverage-summary.json
+          json-final-path: ./coverage/coverage-final.json
+          file-coverage-mode: changes # Try "all" instead of "changes"
+          comment-on: pr
+          vite-config-path: ./vitest.config.ts
+          # comment-title: 'Coverage Report'
+          # comment-body: 'Coverage report generated successfully.'
