@@ -38,9 +38,12 @@ jobs:
           node-version: 18 # Use the Node.js version your project requires
           cache: "npm"
 
+      - name: Print working directory
+        run: pwd
+
       # Step 4: Setup modules and Run Tests
       - name: Run Tests
-        if: ${{ inputs.service }}
+        if: ${{ inputs.actions == 'test' }}
         run: bash ${{ inputs.service }}/.ci/${{ inputs.actions }}.sh
 
       # Step 6: Check Coverage Changes
