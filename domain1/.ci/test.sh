@@ -1,4 +1,2 @@
-
-
-npm -F domain1 install
-npm run test:unit-coverage
+npm install --prefix domain1
+npm --prefix domain1 run test:unit-coverage
