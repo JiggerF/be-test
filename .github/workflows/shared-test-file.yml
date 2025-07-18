@@ -63,14 +63,17 @@ jobs:
 
     steps:
 
-      - name: Print working directory
-        run: ls && pwd
-
       - name: Download coverage artifact
         uses: actions/download-artifact@v4
         with:
           name: coverage-report
           path: ${{ inputs.coverage-path }}
+
+      - name: List coverage directory contents
+        run: ls -R ${{ inputs.coverage-path }}
+
+      - name: List PWD dir
+        run: pwd
 
       - name: Comment on PR
         uses: davelosert/vitest-coverage-report-action@v2
