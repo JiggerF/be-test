@@ -35,7 +35,7 @@ jobs:
 
       # Step 4: Run Unit Tests
       - name: Run Vitest
-        run: npx vitest test/unit --coverage
+        run: npx vitest test:unit-coverage
 
       # Step 6: Check Coverage Changes      
     #   - name: Track coverage changes (no enforcement)
