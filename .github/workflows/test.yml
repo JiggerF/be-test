@@ -7,6 +7,11 @@ on:
                 description: 'Generate coverage report'
                 required: false
                 type: string
+            coverage-path:
+                description: 'Path to the coverage folder'
+                required: false
+                type: string
+                default: coverage
 
 jobs:
   build-and-test:
@@ -33,13 +38,37 @@ jobs:
         run: npx vitest test/unit --coverage
 
       # Step 6: Check Coverage Changes      
-      - name: Track coverage changes (no enforcement)
-        run: npm run test:coverage-check
+    #   - name: Track coverage changes (no enforcement)
+    #     run: npm run test:coverage-check
 
         # Step 7: Upload Coverage Artifact
       - name: Upload Coverage Report
         if: ${{ inputs.generate-report }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: vitest-coverage
-          path: coverage/  
+          name: coverage-report
+          path: ${{ inputs.coverage-path }}
+
+  coverage-report:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    permissions:
+        pull-requests: write
+        
+    steps:
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+            name: coverage-report
+            path: ${{ inputs.coverage-path }}
+  
+      - name: Comment on PR
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          json-summary-path: ${{ inputs.coverage-path }}//coverage-summary.json
+          json-final-path: ${{ inputs.coverage-path }}//coverage-final.json
+          file-coverage-mode: changes # Try "all" instead of "changes"
+          comment-on: pr
+          # comment-title: 'Coverage Report'
+          # comment-body: 'Coverage report generated successfully.'
