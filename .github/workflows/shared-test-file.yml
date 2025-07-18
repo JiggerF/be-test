@@ -7,11 +7,6 @@ on:
         description: "Generate coverage report"
         required: false
         type: string
-      coverage-path:
-        description: "Path to the coverage folder"
-        required: false
-        type: string
-        default: coverage
       service:
         description: "Service name to build"
         required: true
@@ -68,12 +63,6 @@ jobs:
         with:
           name: coverage-report
           path: .
-
-      - name: List coverage directory contents
-        run: ls -R ${{ inputs.coverage-path }}
-
-      - name: List PWD dir
-        run: pwd
 
       - name: Comment on PR
         uses: davelosert/vitest-coverage-report-action@v2
