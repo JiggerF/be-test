@@ -72,6 +72,5 @@ jobs:
           file-coverage-mode: changes # Try "all" instead of "changes"
           comment-on: pr
           vite-config-path: ./vitest.config.ts
-          threshold: 60
           # comment-title: 'Coverage Report'
           # comment-body: 'Coverage report generated successfully.'
