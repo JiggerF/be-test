@@ -18,5 +18,4 @@ jobs:
     with:
       service: domain1
       generate-report: yes
-      coverage-path: coverage
       actions: test

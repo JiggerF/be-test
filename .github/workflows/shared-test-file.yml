@@ -54,7 +54,7 @@ jobs:
         with:
           name: coverage-report
           path: |
-           ${{ inputs.service }}/${{ inputs.coverage-path }}
+           ${{ inputs.service }}/coverage/
            ${{ inputs.service }}/vitest.config.ts
 
   coverage-report:
@@ -79,8 +79,8 @@ jobs:
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          json-summary-path: ${{ inputs.coverage-path }}/coverage-summary.json
-          json-final-path: ${{ inputs.coverage-path }}/coverage-final.json
+          json-summary-path: ./coverage/coverage-summary.json
+          json-final-path: ./coverage/coverage-final.json
           file-coverage-mode: changes # Try "all" instead of "changes"
           comment-on: pr
           vite-config-path: ./vitest.config.ts
