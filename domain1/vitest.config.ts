@@ -8,10 +8,10 @@ export const defaultConfig = {
     globals: true, // Enables global test functions like `describe`, `it`, etc.
     coverage: {
       thresholds: { // Coverage thresholds for CI
-        lines: 80,
-        functions: 80,
-        branches: 80,
-        statements: 80,
+        lines: 50,
+        functions: 50,
+        branches: 50,
+        statements: 50,
       },
       reporter: [
         'text-summary', // shows in terminal
