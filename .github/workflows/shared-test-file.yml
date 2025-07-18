@@ -49,15 +49,14 @@ jobs:
         with:
           name: coverage-report
           path: |
-           ${{ inputs.service }}/coverage/
-           ${{ inputs.service }}/vitest.config.ts
+            ${{ inputs.service }}/coverage/
+            ${{ inputs.service }}/vitest.config.ts
 
   coverage-report:
     needs: build-and-test
+    if: ${{ inputs.generate-report }}
     runs-on: ubuntu-latest
-
     steps:
-
       - name: Download coverage artifact
         uses: actions/download-artifact@v4
         with:
