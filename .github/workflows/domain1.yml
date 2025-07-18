@@ -16,5 +16,7 @@ jobs:
       pull-requests: write
     uses: ./.github/workflows/shared-test-file.yml
     with:
+      service: domain1
       generate-report: yes
       coverage-path: coverage
+      actions: test

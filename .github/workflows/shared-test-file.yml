@@ -1,20 +1,29 @@
 name: Build and Test
 
 on:
-    workflow_call:
-        inputs:
-            generate-report:
-                description: 'Generate coverage report'
-                required: false
-                type: string
-            coverage-path:
-                description: 'Path to the coverage folder'
-                required: false
-                type: string
-                default: coverage
+  workflow_call:
+    inputs:
+      generate-report:
+        description: "Generate coverage report"
+        required: false
+        type: string
+      coverage-path:
+        description: "Path to the coverage folder"
+        required: false
+        type: string
+        default: coverage
+      service:
+        description: "Service name to build"
+        required: true
+        type: string
+      actions:
+        description: "Actions to perform"
+        required: false
+        type: string
 
 jobs:
   build-and-test:
+    name: ${{ inputs.service }} - Build and Test
     runs-on: ubuntu-latest
 
     steps:
@@ -27,21 +36,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18 # Use the Node.js version your project requires
-          cache: 'npm'
+          cache: "npm"
 
-      # Step 3: Install dependencies
-      - name: Install dependencies
-        run: npm install
+      # Step 4: Setup modules and Run Tests
+      - name: Run Tests
+        if: ${{ inputs.service }}
+        run: ${{ inputs.service }}/.ci/${{ inputs.actions }}.sh
 
-      # Step 4: Run Unit Tests
-      - name: Run Vitest
-        run: npx vitest test:unit-coverage
+      # Step 6: Check Coverage Changes
+      #   - name: Track coverage changes (no enforcement)
+      #     run: npm run test:coverage-check
 
-      # Step 6: Check Coverage Changes      
-    #   - name: Track coverage changes (no enforcement)
-    #     run: npm run test:coverage-check
-
-        # Step 7: Upload Coverage Artifact
+      # Step 7: Upload Coverage Artifact
       - name: Upload Coverage Report
         if: ${{ inputs.generate-report }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -57,15 +63,15 @@ jobs:
       - name: Download coverage artifact
         uses: actions/download-artifact@v4
         with:
-            name: coverage-report
-            path: ${{ inputs.coverage-path }}
-  
+          name: coverage-report
+          path: ${{ inputs.coverage-path }}
+
       - name: Comment on PR
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          json-summary-path: ${{ inputs.coverage-path }}//coverage-summary.json
-          json-final-path: ${{ inputs.coverage-path }}//coverage-final.json
+          json-summary-path: ${{ inputs.coverage-path }}/coverage-summary.json
+          json-final-path: ${{ inputs.coverage-path }}/coverage-final.json
           file-coverage-mode: changes # Try "all" instead of "changes"
           comment-on: pr
           # comment-title: 'Coverage Report'
