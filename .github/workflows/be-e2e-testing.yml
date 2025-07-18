@@ -6,6 +6,8 @@ on:
 
 jobs:
   run-test:
+    permissions:
+      pull-requests: write
     uses: ./.github/workflows/test.yml
     with:
       generate-report: yes
