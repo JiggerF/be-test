@@ -38,9 +38,6 @@ jobs:
           node-version: 18 # Use the Node.js version your project requires
           cache: "npm"
 
-      - name: Print working directory
-        run: pwd
-
       # Step 4: Setup modules and Run Tests
       - name: Run Tests
         if: ${{ inputs.actions == 'test' }}
@@ -63,6 +60,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+      - name: Print working directory
+        run: ll && pwd
+
       - name: Download coverage artifact
         uses: actions/download-artifact@v4
         with:
