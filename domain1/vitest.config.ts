@@ -7,10 +7,12 @@ export const defaultConfig = {
   test: {
     globals: true, // Enables global test functions like `describe`, `it`, etc.
     coverage: {
-      lines: 80,
-      functions: 80,
-      branches: 80,
-      statements: 80,
+      thresholds: { // Coverage thresholds for CI
+        lines: 80,
+        functions: 80,
+        branches: 80,
+        statements: 80,
+      },
       reporter: [
         'text-summary', // shows in terminal
         'json-summary', // structured format for pipelines,
