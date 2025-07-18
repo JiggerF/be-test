@@ -53,6 +53,8 @@ jobs:
             ${{ inputs.service }}/vitest.config.ts
 
   coverage-report:
+    permissions:
+      pull-requests: write
     needs: build-and-test
     if: ${{ inputs.generate-report }}
     runs-on: ubuntu-latest
