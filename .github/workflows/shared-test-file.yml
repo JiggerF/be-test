@@ -62,7 +62,7 @@ jobs:
     steps:
 
       - name: Print working directory
-        run: ll && pwd
+        run: ls && pwd
 
       - name: Download coverage artifact
         uses: actions/download-artifact@v4
