@@ -52,17 +52,6 @@ jobs:
             ${{ inputs.service }}/coverage/
             ${{ inputs.service }}/vitest.config.ts
 
-  coverage-report:
-    needs: build-and-test
-    if: ${{ inputs.generate-report }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download coverage artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage-report
-          path: .
-
       - name: Comment on PR
         uses: davelosert/vitest-coverage-report-action@v2
         with:
@@ -74,3 +63,12 @@ jobs:
           vite-config-path: ./vitest.config.ts
           # comment-title: 'Coverage Report'
           # comment-body: 'Coverage report generated successfully.'
+
+      # - name: Send Coverage Report to Datadog
+      #   if: ${{ inputs.generate-report }}
+      #   env:  
+      #     DD_API_KEY: ${{ secrets.DD_API_KEY }}
+      #     DD_SITE:  datadoghq.com
+      #     SERVICE_NAME: ${{ inputs.service }}
+      #     ENVIRONMENT: staging
+      #   run: bash ${{ inputs.service }}/.ci/send-coverage-report.sh
